@@ -68,6 +68,7 @@ function generatePage() {
   underHeader.id = "underHeader";
   underHeader.textContent = "Previous cards:";
   
+ 
 
 
   let lastCardsContainer = document.createElement("div");
