@@ -1,21 +1,11 @@
+/// dev
+
 const suits = ["♥", "♦", "♣", "♠"];
-const ranks = [
-  "A",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "t",
-  "J",
-  "Q",
-  "K",
-];
+const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "t", "J", "Q", "K"];
 let deck = [];
 let oldDeck = [];
+let headerText = "Random card";
+
 for (const suit of suits) {
   for (const rank of ranks) {
     deck.push(`${rank}${suit}`);
@@ -41,13 +31,29 @@ let cardHeight = 213;
 function generatePage() {
   shuffle(deck);
   const appContainer = document.querySelector("#appContainer");
-  appContainer.style.display = "flex"
-  appContainer.style.flexDirection = "column"
-  appContainer.style.alignItems = "center"
+  appContainer.style.display = "flex";
+  appContainer.style.flexDirection = "column";
+  appContainer.style.alignItems = "center";
+
+  function toggleTheme() { 
+    var theme = document.getElementsByTagName('link')[0]; 
+    if (theme.getAttribute('href') == 'light.css') { 
+        theme.setAttribute('href', 'dark.css'); 
+        themeToggleButton.textContent = "Light";
+    } else { 
+        theme.setAttribute('href', 'light.css'); 
+        themeToggleButton.textContent = "Dark";
+    } 
+} 
+  let themeToggleButton = document.createElement("button");
+  themeToggleButton.id = "themeToggleButton";
+  themeToggleButton.textContent = "Dark";
+  
+  themeToggleButton.addEventListener("click", toggleTheme);
 
   let header = document.createElement("h1");
   header.id = "header";
-  header.textContent = "Press space to draw a random card";
+  header.textContent = headerText;
 
   let randomCardsContainer = document.createElement("div");
   randomCardsContainer.id = "randomCardsContainer";
@@ -59,25 +65,22 @@ function generatePage() {
   button.textContent = "Draw";
   button.style.height = "50px";
   button.style.width = "80px";
-  button.style.borderRadius = "20px"
-  button.addEventListener("click", function() {
+  button.style.borderRadius = "20px";
+  button.addEventListener("click", function () {
     dealCard();
   });
 
   let underHeader = document.createElement("h2");
   underHeader.id = "underHeader";
   underHeader.textContent = "Previous cards:";
-  
- 
-
 
   let lastCardsContainer = document.createElement("div");
   lastCardsContainer.id = "lastCardsContainer";
-  lastCardsContainer.style.display = "flex"
-  lastCardsContainer.style.height = cardHeight+"px"
-  lastCardsContainer.alignItems = "flex-end"
+  lastCardsContainer.style.display = "flex";
+  lastCardsContainer.style.height = cardHeight + "px";
+  lastCardsContainer.alignItems = "flex-end";
 
-
+  appContainer.appendChild(themeToggleButton);
   appContainer.appendChild(header);
   appContainer.appendChild(randomCardsContainer);
   appContainer.appendChild(button);
@@ -89,22 +92,19 @@ let cardFontSize = 50;
 let cardsDealt = 0;
 
 function dealCard() {
-    let randomCardsContainer = document.querySelector("#randomCardsContainer");
-    let lastCardsContainer = document.querySelector("#lastCardsContainer");
-    if (randomCardsContainer.firstChild) {
-        cardsDealt++;
-        randomCardsContainer.firstChild.id = "previousCard"
-        let styleObject = document.getElementById("previousCard")
-        styleObject.style.width = "150px"
-        lastCardsContainer.appendChild(randomCardsContainer.firstChild);
-        if (cardsDealt > 5){
-            lastCardsContainer.removeChild(lastCardsContainer.firstChild);
-        }
-      }
- /// give cards  in randomcardscontainer classname 1 to amount of cards
-
-
-
+  let randomCardsContainer = document.querySelector("#randomCardsContainer");
+  let lastCardsContainer = document.querySelector("#lastCardsContainer");
+  if (randomCardsContainer.firstChild) {
+    cardsDealt++;
+    randomCardsContainer.firstChild.id = "previousCard";
+    let styleObject = document.getElementById("previousCard");
+    styleObject.style.width = "150px";
+    lastCardsContainer.appendChild(randomCardsContainer.firstChild);
+    if (cardsDealt > 5) {
+      lastCardsContainer.removeChild(lastCardsContainer.firstChild);
+    }
+  }
+  /// give cards  in randomcardscontainer classname 1 to amount of cards
 
   if (deck.length != 0) {
     let randomCard = document.createElement("div");
@@ -117,8 +117,8 @@ function dealCard() {
     cardToAdd = cardToAdd[0];
     let number = cardToAdd.charAt(0);
     let type = cardToAdd.charAt(1);
-    if (number == "t"){
-        number = 10;
+    if (number == "t") {
+      number = 10;
     }
 
     let numberContainer = document.createElement("div");
@@ -136,8 +136,8 @@ function dealCard() {
       typeContainer.style.color = "red";
       numberContainer.style.color = "red";
     } else if (type === "♣" || type === "♠") {
-        typeContainer.style.color = "black";
-        numberContainer.style.color = "black";
+      typeContainer.style.color = "black";
+      numberContainer.style.color = "black";
     }
     let numberContainerCopy = numberContainer.cloneNode(true);
 
@@ -150,14 +150,15 @@ function dealCard() {
 
     randomCardsContainer.appendChild(randomCard);
   }
-  if (deck.length == 0){
-    console.log("no more cards")
+  if (deck.length == 0) {
+    console.log("no more cards");
   }
+
 }
 generatePage();
 document.addEventListener("keydown", function (event) {
-    if (event.key === " ") {
-        dealCard();
-    }
-    
-  });
+  if (event.key === " ") {
+    dealCard();
+  }
+});
+
